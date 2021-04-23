@@ -1,0 +1,169 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Pet/Pet.gd" type="Script" id=1]
+[ext_resource path="res://icon.png" type="Texture" id=2]
+[ext_resource path="res://Pet/Menus.gd" type="Script" id=3]
+[ext_resource path="res://Pet/Notes.gd" type="Script" id=4]
+[ext_resource path="res://Pet/Shortcuts.gd" type="Script" id=5]
+
+[sub_resource type="Animation" id=1]
+resource_name = "idle"
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:rotation_degrees")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ -3.90297, 8.02503 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Sprite:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0.82677, 0.82677 ), Vector2( 0.945754, 0.945754 ) ]
+}
+
+[node name="Pet" type="Node2D"]
+script = ExtResource( 1 )
+
+[node name="ColorRect" type="ColorRect" parent="."]
+visible = false
+margin_left = -211.0
+margin_top = -169.0
+margin_right = 319.0
+margin_bottom = 186.0
+color = Color( 0, 0.682353, 0.619608, 0.286275 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Sprite" type="Sprite" parent="."]
+position = Vector2( 32, 32 )
+rotation = -0.0546575
+scale = Vector2( 0.834464, 0.834464 )
+texture = ExtResource( 2 )
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 20.0
+autostart = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/idle = SubResource( 1 )
+
+[node name="Menus" type="Container" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 64, 64 )
+size_flags_horizontal = 0
+size_flags_vertical = 0
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="OpenBtn" type="Button" parent="Menus"]
+self_modulate = Color( 1, 1, 1, 0.576471 )
+margin_left = 26.0
+margin_top = 22.0
+margin_right = 38.0
+margin_bottom = 42.0
+text = "Open"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="goAway" type="Button" parent="Menus"]
+self_modulate = Color( 1, 1, 1, 0.576471 )
+margin_right = 12.0
+margin_bottom = 20.0
+text = "Go"
+
+[node name="Limits" type="MarginContainer" parent="Menus"]
+visible = false
+margin_left = 64.0
+margin_right = 104.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 300, 400 )
+
+[node name="Tabs" type="TabContainer" parent="Menus/Limits"]
+margin_right = 300.0
+margin_bottom = 400.0
+rect_min_size = Vector2( 200, 0 )
+tab_align = 0
+
+[node name="Notes" type="TextEdit" parent="Menus/Limits/Tabs"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
+rect_min_size = Vector2( 200, 300 )
+script = ExtResource( 4 )
+
+[node name="saveTimer" type="Timer" parent="Menus/Limits/Tabs/Notes"]
+wait_time = 0.5
+one_shot = true
+
+[node name="Shortcuts" type="VBoxContainer" parent="Menus/Limits/Tabs"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
+script = ExtResource( 5 )
+
+[node name="Configs" type="HBoxContainer" parent="Menus/Limits/Tabs/Shortcuts"]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="Configure" type="Button" parent="Menus/Limits/Tabs/Shortcuts/Configs"]
+margin_right = 72.0
+margin_bottom = 20.0
+text = "Configure"
+
+[node name="add" type="Button" parent="Menus/Limits/Tabs/Shortcuts/Configs"]
+visible = false
+margin_right = 12.0
+margin_bottom = 20.0
+text = "add"
+
+[node name="remove" type="CheckBox" parent="Menus/Limits/Tabs/Shortcuts/Configs"]
+visible = false
+margin_right = 12.0
+margin_bottom = 20.0
+text = "remove"
+
+[node name="FileDialog" type="FileDialog" parent="Menus/Limits"]
+margin_right = 300.0
+margin_bottom = 400.0
+window_title = "Open a File"
+mode = 0
+access = 2
+filters = PoolStringArray( "*.exe" )
+show_hidden_files = true
+current_dir = "/devRepos/DesctopPet"
+current_path = "/devRepos/DesctopPet/"
+
+[connection signal="timeout" from="Timer" to="." method="choose_pos"]
+[connection signal="sort_children" from="Menus" to="Menus" method="_on_Menus_sort_children"]
+[connection signal="pressed" from="Menus/OpenBtn" to="Menus" method="_on_OpenBtn_pressed"]
+[connection signal="pressed" from="Menus/goAway" to="." method="choose_pos" binds= [ true ]]
+[connection signal="text_changed" from="Menus/Limits/Tabs/Notes" to="Menus/Limits/Tabs/Notes" method="_on_Notes_text_changed"]
+[connection signal="timeout" from="Menus/Limits/Tabs/Notes/saveTimer" to="Menus/Limits/Tabs/Notes" method="_on_saveTimer_timeout"]
+[connection signal="pressed" from="Menus/Limits/Tabs/Shortcuts/Configs/Configure" to="Menus/Limits/Tabs/Shortcuts" method="_on_Configure_pressed"]
+[connection signal="pressed" from="Menus/Limits/Tabs/Shortcuts/Configs/add" to="Menus/Limits/Tabs/Shortcuts" method="_on_add_pressed"]
+[connection signal="file_selected" from="Menus/Limits/FileDialog" to="Menus/Limits/Tabs/Shortcuts" method="_on_FileDialog_file_selected"]

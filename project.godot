@@ -11,7 +11,7 @@ config_version=4
 [application]
 
 config/name="DesctopPet"
-run/main_scene="res://test.tscn"
+run/main_scene="res://Root.tscn"
 config/icon="res://icon.png"
 
 [display]

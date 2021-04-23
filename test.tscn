@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://icon.png" type="Texture" id=1]
+[ext_resource path="res://test.gd" type="Script" id=2]
+
+[node name="test" type="Sprite"]
+position = Vector2( 415.676, 244.327 )
+texture = ExtResource( 1 )
+script = ExtResource( 2 )
+
+[node name="ColorRect" type="ColorRect" parent="."]
+visible = false
+margin_left = -733.0
+margin_top = -521.0
+margin_right = 2529.0
+margin_bottom = 1908.0
+color = Color( 0.196078, 0.682353, 0, 0.180392 )
+__meta__ = {
+"_edit_use_anchors_": false
+}

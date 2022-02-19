@@ -82,16 +82,18 @@ func update_pet_area():
 		while polygons.has(null):
 			polygons.remove(polygons.find_last(null))
 	
+	points.push_back(Vector2())
 	for poly in polygons:
 		for p in poly:
 			points.push_back(p)
 		points.push_back(poly[0])
+		points.push_back(Vector2())
 	
 	########
 	line.clear_points()
 	for p in points:
 		line.add_point(p)
-	OS.set_window_mouse_passthrough(PoolVector2Array(points))
+#	OS.set_window_mouse_passthrough(PoolVector2Array(points))
 	
 
 func _polygons_intesect(p1, p2)->bool:

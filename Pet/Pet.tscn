@@ -1,65 +1,21 @@
 [gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Pet/Pet.gd" type="Script" id=1]
-[ext_resource path="res://icon.png" type="Texture" id=2]
+[ext_resource path="res://Portray/Rectangle.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Pet/Menus.gd" type="Script" id=3]
 [ext_resource path="res://Pet/Notes.gd" type="Script" id=4]
 [ext_resource path="res://Pet/Shortcuts.gd" type="Script" id=5]
 
-[sub_resource type="Animation" id=1]
-resource_name = "idle"
-loop = true
-tracks/0/type = "value"
-tracks/0/path = NodePath("Sprite:rotation_degrees")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.5 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 0,
-"values": [ -3.90297, 8.02503 ]
-}
-tracks/1/type = "value"
-tracks/1/path = NodePath("Sprite:scale")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 0, 0.5 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 0,
-"values": [ Vector2( 0.82677, 0.82677 ), Vector2( 0.945754, 0.945754 ) ]
-}
+[sub_resource type="Theme" id=1]
 
 [node name="Pet" type="Node2D"]
 script = ExtResource( 1 )
 
-[node name="ColorRect" type="ColorRect" parent="."]
-visible = false
-margin_left = -211.0
-margin_top = -169.0
-margin_right = 319.0
-margin_bottom = 186.0
-color = Color( 0, 0.682353, 0.619608, 0.286275 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Sprite" type="Sprite" parent="."]
-position = Vector2( 32, 32 )
-rotation = -0.0546575
-scale = Vector2( 0.834464, 0.834464 )
-texture = ExtResource( 2 )
+[node name="Pet" parent="." instance=ExtResource( 2 )]
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 20.0
 autostart = true
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/idle = SubResource( 1 )
 
 [node name="Menus" type="Container" parent="." groups=["Cutout"]]
 margin_right = 40.0
@@ -73,6 +29,7 @@ __meta__ = {
 }
 
 [node name="OpenBtn" type="Button" parent="Menus"]
+visible = false
 self_modulate = Color( 1, 1, 1, 0.576471 )
 margin_left = 26.0
 margin_top = 22.0
@@ -84,6 +41,7 @@ __meta__ = {
 }
 
 [node name="goAway" type="Button" parent="Menus"]
+visible = false
 self_modulate = Color( 1, 1, 1, 0.576471 )
 margin_right = 12.0
 margin_bottom = 20.0
@@ -147,9 +105,10 @@ margin_right = 12.0
 margin_bottom = 20.0
 text = "remove"
 
-[node name="FileDialog" type="FileDialog" parent="Menus/Limits"]
+[node name="FileDialog" type="FileDialog" parent="Menus/Limits" groups=["Cutout"]]
 margin_right = 300.0
 margin_bottom = 400.0
+theme = SubResource( 1 )
 window_title = "Open a File"
 mode = 0
 access = 2

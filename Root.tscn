@@ -1,17 +1,7 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://Root.gd" type="Script" id=1]
 [ext_resource path="res://Pet/Pet.tscn" type="PackedScene" id=2]
-
-[sub_resource type="Curve2D" id=2]
-_data = {
-"points": PoolVector2Array( 0, 0, 0, 0, 904, 352, 0, 0, 0, 0, 722, 585, 0, 0, 0, 0, 512, 548, 0, 0, 0, 0, 581, 719, 0, 0, 0, 0, 290, 486, 0, 0, 0, 0, 70, 497, 0, 0, 0, 0, 47, 322, 0, 0, 0, 0, 497, 305 )
-}
-
-[sub_resource type="Curve2D" id=3]
-_data = {
-"points": PoolVector2Array( 0, 0, 0, 0, 1003, 440, 0, 0, 0, 0, 524, 571, 0, 0, 0, 0, 763, 740, 0, 0, 0, 0, 634, 852, 0, 0, 0, 0, 412, 930, 0, 0, 0, 0, 396, 435, 0, 0, 0, 0, 125, 633, 0, 0, 0, 0, 362, 274 )
-}
 
 [node name="Root" type="Node"]
 script = ExtResource( 1 )
@@ -33,11 +23,3 @@ __meta__ = {
 points = PoolVector2Array( 100, 0, 100, 100 )
 
 [node name="Pet" parent="." instance=ExtResource( 2 )]
-
-[node name="paths" type="Node" parent="."]
-
-[node name="Path2D" type="Path2D" parent="paths"]
-curve = SubResource( 2 )
-
-[node name="Path2D2" type="Path2D" parent="paths"]
-curve = SubResource( 3 )

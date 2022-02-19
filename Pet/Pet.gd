@@ -3,16 +3,22 @@ extends Node2D
 
 var goal_position : Vector2
 
+onready var visual := $Pet
+
 func _ready():
 	randomize()
 	choose_pos()
-	$AnimationPlayer.play("idle")
 
 
 func _process(_delta):
 	
 	if (goal_position-position).length() > 20:
-		position += (goal_position-position)/10
+		var dir := ((goal_position-position)/10).clamped(5)
+		position += dir
+		visual.flip_h = dir.x > 0
+		visual.walk()
+	else:
+		visual.stop_walk()
 	update_visible_area()
 	
 

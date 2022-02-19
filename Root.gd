@@ -30,6 +30,17 @@ func update_pet_area():
 			var pol := []
 			var r : Rect2 = node.get_global_rect()
 			r = r.grow(5)
+			
+			## handle expand margins
+			var panel = node.get_stylebox("panel")
+			if panel.has_method("get_expand_margin"):
+				for i in range(4):
+					r = r.grow_margin(i, panel.get_expand_margin(i))
+			if panel.has_method("get_expand_margin_size"):
+				for i in range(4):
+					r = r.grow_margin(i, panel.get_expand_margin_size(i))
+			################
+			
 			pol.push_back(r.position)
 			pol.push_back(Vector2(r.position.x+r.size.x, r.position.y))
 			pol.push_back(r.position+r.size)
@@ -37,6 +48,16 @@ func update_pet_area():
 			polygons.push_back(pol)
 		if node.get_class() == "Path2D":
 			polygons.push_back(node.curve.get_baked_points())
+		if node.get_class() == "Sprite":
+			var pol := []
+			var r : Rect2 = node.get_rect()
+			r.position = node.global_position
+			r.size *= node.scale
+			pol.push_back(r.position)
+			pol.push_back(Vector2(r.position.x+r.size.x, r.position.y))
+			pol.push_back(r.position+r.size)
+			pol.push_back(Vector2(r.position.x, r.position.y+r.size.y))
+			polygons.push_back(pol)
 	
 	var points := []
 	
@@ -66,7 +87,7 @@ func update_pet_area():
 	line.clear_points()
 	for p in points:
 		line.add_point(p)
-	OS.call_deferred("set_window_mouse_passthrough", PoolVector2Array(points))
+	OS.set_window_mouse_passthrough(PoolVector2Array(points))
 	
 
 func _polygons_intesect(p1, p2)->bool:

@@ -1,29 +1,52 @@
-extends Container
+extends VBoxContainer
 
-onready var limits := $Limits
+onready var main := $"../main"
+onready var ignore_mouse := $ignore_mouse_timer
+var mouse_inside := false
 
-
-func _on_Menus_sort_children():
-	var obtn = $OpenBtn
-	obtn.rect_size = Vector2()
-	obtn.rect_position = rect_size/2-obtn.rect_size/Vector2(2, -2.5)
+func _process(delta):
+	_test_mouse_pos()
+	var change : float = [-delta, delta][int(mouse_inside)]*5
 	
-	var awaybtn = $goAway
-	awaybtn.rect_size = Vector2()
-	awaybtn.rect_position = rect_size/2-awaybtn.rect_size/Vector2(2, 1.5)
+	if mouse_inside and !ignore_mouse.time_left > 0:
+		get_parent().goal_position = get_parent().global_position
+	modulate.a = clamp(modulate.a+change, 0, 1)
 	
+	for b in get_children():
+		if b is BaseButton:
+			b.disabled = !_can_use_btns()
+
+func _ready():
+	for b in get_children():
+		if b is Control:
+			b.connect("mouse_entered", self, "set", ["mouse_inside", true])
+#			b.connect("mouse_exited", self, "set", ["mouse_inside", false])
 
 func is_open()->bool:
-	return limits.visible
-
-
-func get_rect(force=false)->Rect2:
-	if is_open() or force:
-		return .get_rect().merge($Limits.get_rect())
-	return .get_rect()
-
+	return main.visible
 
 
 func _on_OpenBtn_pressed():
-	limits.visible = !limits.visible
-	get_parent().update_visible_area()
+	main.visible = !main.visible
+#	get_node("/root/Root").update_pet_area()
+
+
+func _on_follow_toggled(button_pressed):
+	pass # Replace with function body.
+
+func _can_use_btns()->bool:
+	if ignore_mouse.time_left > 0: return false
+	if modulate.a < .8: return false
+	return true
+
+func _test_mouse_pos():
+	mouse_inside = get_global_rect().grow(-10).has_point(get_global_mouse_position())
+
+func _on_Buttons_mouse_exited():
+	mouse_inside = false
+
+
+func _on_goAway_pressed():
+	ignore_mouse.start()
+	mouse_inside = false
+	get_parent().choose_pos()

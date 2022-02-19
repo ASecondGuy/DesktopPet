@@ -2,7 +2,7 @@ extends Node
 
 
 var window_rect := Rect2() 
-var check_mous_outside := false
+var full_screen_detection := false
 
 onready var line := $"debugdraw/Line2D"
 
@@ -16,9 +16,13 @@ func _ready():
 	get_viewport().transparent_bg = true
 	update_pet_area()
 
-
+func _process(_delta):
+	update_pet_area()
 
 func update_pet_area():
+	if full_screen_detection:
+		OS.set_window_mouse_passthrough([])
+		return
 	
 	var polygons = []
 	for node in get_tree().get_nodes_in_group("Cutout"):
@@ -101,3 +105,7 @@ func _polygons_overlap(polygons:Array)->bool:
 			if _polygons_intesect(polygons[i], polygons[i2]):
 				return true
 	return false
+
+
+
+

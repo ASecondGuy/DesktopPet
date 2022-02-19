@@ -17,50 +17,77 @@ script = ExtResource( 1 )
 wait_time = 20.0
 autostart = true
 
-[node name="Menus" type="Container" parent="." groups=["Cutout"]]
-margin_right = 40.0
-margin_bottom = 40.0
+[node name="Buttons" type="VBoxContainer" parent="." groups=["Cutout"]]
+margin_left = 12.0
+margin_top = 13.0
+margin_right = 116.0
+margin_bottom = 113.0
 rect_min_size = Vector2( 64, 64 )
 size_flags_horizontal = 0
 size_flags_vertical = 0
+alignment = 1
 script = ExtResource( 3 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="OpenBtn" type="Button" parent="Menus"]
-visible = false
-self_modulate = Color( 1, 1, 1, 0.576471 )
-margin_left = 26.0
-margin_top = 22.0
-margin_right = 38.0
-margin_bottom = 42.0
-text = "Open"
+[node name="OpenBtn" type="Button" parent="Buttons"]
+margin_left = 9.0
+margin_top = 28.0
+margin_right = 95.0
+margin_bottom = 48.0
+size_flags_horizontal = 4
+text = "Open Panel"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="goAway" type="Button" parent="Menus"]
-visible = false
-self_modulate = Color( 1, 1, 1, 0.576471 )
-margin_right = 12.0
-margin_bottom = 20.0
-text = "Go"
+[node name="goAway" type="Button" parent="Buttons"]
+margin_left = 18.0
+margin_top = 52.0
+margin_right = 85.0
+margin_bottom = 72.0
+size_flags_horizontal = 4
+text = "Go Away"
 
-[node name="Limits" type="MarginContainer" parent="Menus"]
+[node name="follow" type="Button" parent="Buttons"]
 visible = false
-margin_left = 64.0
-margin_right = 104.0
-margin_bottom = 40.0
+margin_left = 19.0
+margin_top = 48.0
+margin_right = 96.0
+margin_bottom = 68.0
+size_flags_horizontal = 4
+toggle_mode = true
+text = "Follow Me"
+
+[node name="Button2" type="Button" parent="Buttons"]
+visible = false
+margin_left = 52.0
+margin_top = 48.0
+margin_right = 64.0
+margin_bottom = 68.0
+size_flags_horizontal = 4
+
+[node name="ignore_mouse_timer" type="Timer" parent="Buttons"]
+one_shot = true
+
+[node name="main" type="MarginContainer" parent="."]
+visible = false
+margin_left = 152.0
+margin_right = 452.0
+margin_bottom = 400.0
 rect_min_size = Vector2( 300, 400 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="Tabs" type="TabContainer" parent="Menus/Limits" groups=["Cutout"]]
+[node name="Tabs" type="TabContainer" parent="main" groups=["Cutout"]]
 margin_right = 300.0
 margin_bottom = 400.0
 rect_min_size = Vector2( 200, 0 )
 tab_align = 0
 
-[node name="Notes" type="TextEdit" parent="Menus/Limits/Tabs"]
+[node name="Notes" type="TextEdit" parent="main/Tabs"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
@@ -70,11 +97,11 @@ margin_bottom = -4.0
 rect_min_size = Vector2( 200, 300 )
 script = ExtResource( 4 )
 
-[node name="saveTimer" type="Timer" parent="Menus/Limits/Tabs/Notes"]
+[node name="saveTimer" type="Timer" parent="main/Tabs/Notes"]
 wait_time = 0.5
 one_shot = true
 
-[node name="Shortcuts" type="VBoxContainer" parent="Menus/Limits/Tabs"]
+[node name="Shortcuts" type="VBoxContainer" parent="main/Tabs"]
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -84,28 +111,28 @@ margin_right = -4.0
 margin_bottom = -4.0
 script = ExtResource( 5 )
 
-[node name="Configs" type="HBoxContainer" parent="Menus/Limits/Tabs/Shortcuts"]
+[node name="Configs" type="HBoxContainer" parent="main/Tabs/Shortcuts"]
 margin_right = 40.0
 margin_bottom = 40.0
 
-[node name="Configure" type="Button" parent="Menus/Limits/Tabs/Shortcuts/Configs"]
+[node name="Configure" type="Button" parent="main/Tabs/Shortcuts/Configs"]
 margin_right = 72.0
 margin_bottom = 20.0
 text = "Configure"
 
-[node name="add" type="Button" parent="Menus/Limits/Tabs/Shortcuts/Configs"]
+[node name="add" type="Button" parent="main/Tabs/Shortcuts/Configs"]
 visible = false
 margin_right = 12.0
 margin_bottom = 20.0
 text = "add"
 
-[node name="remove" type="CheckBox" parent="Menus/Limits/Tabs/Shortcuts/Configs"]
+[node name="remove" type="CheckBox" parent="main/Tabs/Shortcuts/Configs"]
 visible = false
 margin_right = 12.0
 margin_bottom = 20.0
 text = "remove"
 
-[node name="FileDialog" type="FileDialog" parent="Menus/Limits" groups=["Cutout"]]
+[node name="FileDialog" type="FileDialog" parent="main" groups=["Cutout"]]
 margin_right = 300.0
 margin_bottom = 400.0
 theme = SubResource( 1 )
@@ -118,11 +145,13 @@ current_dir = "/devRepos/DesctopPet"
 current_path = "/devRepos/DesctopPet/"
 
 [connection signal="timeout" from="Timer" to="." method="choose_pos"]
-[connection signal="sort_children" from="Menus" to="Menus" method="_on_Menus_sort_children"]
-[connection signal="pressed" from="Menus/OpenBtn" to="Menus" method="_on_OpenBtn_pressed"]
-[connection signal="pressed" from="Menus/goAway" to="." method="choose_pos" binds= [ true ]]
-[connection signal="text_changed" from="Menus/Limits/Tabs/Notes" to="Menus/Limits/Tabs/Notes" method="_on_Notes_text_changed"]
-[connection signal="timeout" from="Menus/Limits/Tabs/Notes/saveTimer" to="Menus/Limits/Tabs/Notes" method="_on_saveTimer_timeout"]
-[connection signal="pressed" from="Menus/Limits/Tabs/Shortcuts/Configs/Configure" to="Menus/Limits/Tabs/Shortcuts" method="_on_Configure_pressed"]
-[connection signal="pressed" from="Menus/Limits/Tabs/Shortcuts/Configs/add" to="Menus/Limits/Tabs/Shortcuts" method="_on_add_pressed"]
-[connection signal="file_selected" from="Menus/Limits/FileDialog" to="Menus/Limits/Tabs/Shortcuts" method="_on_FileDialog_file_selected"]
+[connection signal="mouse_entered" from="Buttons" to="Buttons" method="set" binds= [ "mouse_inside", true ]]
+[connection signal="mouse_exited" from="Buttons" to="Buttons" method="_on_Buttons_mouse_exited"]
+[connection signal="pressed" from="Buttons/OpenBtn" to="Buttons" method="_on_OpenBtn_pressed"]
+[connection signal="pressed" from="Buttons/goAway" to="Buttons" method="_on_goAway_pressed"]
+[connection signal="toggled" from="Buttons/follow" to="Buttons" method="_on_follow_toggled"]
+[connection signal="text_changed" from="main/Tabs/Notes" to="main/Tabs/Notes" method="_on_Notes_text_changed"]
+[connection signal="timeout" from="main/Tabs/Notes/saveTimer" to="main/Tabs/Notes" method="_on_saveTimer_timeout"]
+[connection signal="pressed" from="main/Tabs/Shortcuts/Configs/Configure" to="main/Tabs/Shortcuts" method="_on_Configure_pressed"]
+[connection signal="pressed" from="main/Tabs/Shortcuts/Configs/add" to="main/Tabs/Shortcuts" method="_on_add_pressed"]
+[connection signal="file_selected" from="main/FileDialog" to="main/Tabs/Shortcuts" method="_on_FileDialog_file_selected"]

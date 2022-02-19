@@ -18,68 +18,65 @@ func _ready():
 
 
 
-func update_pet_area(r:=window_rect, scale:=Vector2.ONE):
-#	if Engine.get_frames_drawn()%20<1 and check_mous_outside:
-#	OS.set_window_mouse_passthrough([])
+func update_pet_area():
+	
+	var polygons = []
+	for node in get_tree().get_nodes_in_group("Cutout"):
+		if node.has_method("get_cutout_polygon"):
+			polygons.push_back(node.get_cutout_polygon())
 		
-#		return
+		if Array(ClassDB.get_inheriters_from_class("Control")).has(node.get_class()):
+			if !node.is_visible_in_tree(): continue
+			var pol := []
+			var r : Rect2 = node.get_global_rect()
+			r = r.grow(5)
+			pol.push_back(r.position)
+			pol.push_back(Vector2(r.position.x+r.size.x, r.position.y))
+			pol.push_back(r.position+r.size)
+			pol.push_back(Vector2(r.position.x, r.position.y+r.size.y))
+			polygons.push_back(pol)
+		if node.get_class() == "Path2D":
+			polygons.push_back(node.curve.get_baked_points())
 	
-
 	var points := []
-	var grow_val : Vector2 = r.size*(scale-Vector2(1, 1))/2
-	r = r.grow_individual(grow_val.x, grow_val.y, grow_val.x, grow_val.y)
 	
-	points.push_back(r.position)
-	points.push_back(Vector2(r.position.x+r.size.x, r.position.y))
-	points.push_back(r.position+r.size)
-	points.push_back(Vector2(r.position.x, r.position.y+r.size.y))
 	
-	var polygons = [points.duplicate()]
-	for c in $paths.get_children():
-		polygons.push_back(c.curve.get_baked_points())
 	
 	points.clear()
-	print("")
-	while true:
+	while _polygons_overlap(polygons):
 		for i in range(polygons.size()):
-			var p1 = polygons[i]
-			if p1 == null: continue
-			for i2 in range(i, polygons.size()):
-				print(i, i2)
-				var p2 = polygons[i2]
-				if p2 == null: continue
-				
-				if _polygons_intesect(p1, p2):
-					var result = Geometry.merge_polygons_2d(p1, p2)
-					polygons[i] = result[0]
-					p2 = null
+			for i2 in range(polygons.size()):
+				var pol = polygons[i]
+				var pol2 = polygons[i2]
+				if i == i2: continue
+				if pol == null or pol2 == null: continue
+				if _polygons_intesect(pol, pol2):
+					polygons[i] = Geometry.merge_polygons_2d(pol, pol2)[0]
+					polygons[i2] = null
 		
 		while polygons.has(null):
 			polygons.remove(polygons.find_last(null))
-		
-		var loop_finished := true
-		for i in range(polygons.size()):
-			for i2 in range(i, polygons.size()):
-				if i == i2: continue
-				if !_polygons_intesect(polygons[i], polygons[i2]):
-					loop_finished = false
-		
-		if loop_finished: break
-		break
 	
 	for poly in polygons:
 		for p in poly:
 			points.push_back(p)
 		points.push_back(poly[0])
 	
+	########
 	line.clear_points()
 	for p in points:
 		line.add_point(p)
-	
-#	OS.call_deferred("set_window_mouse_passthrough", PoolVector2Array(points))
+	OS.call_deferred("set_window_mouse_passthrough", PoolVector2Array(points))
 	
 
 func _polygons_intesect(p1, p2)->bool:
 #	prints("Inter:", Geometry.intersect_polygons_2d(p1, p2).size())
 	return Geometry.intersect_polygons_2d(p1, p2).size() > 0
 
+func _polygons_overlap(polygons:Array)->bool:
+	for i in range(polygons.size()):
+		for i2 in range(polygons.size()):
+			if i <= i2: continue
+			if _polygons_intesect(polygons[i], polygons[i2]):
+				return true
+	return false

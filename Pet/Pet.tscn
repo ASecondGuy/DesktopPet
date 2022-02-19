@@ -61,7 +61,7 @@ autostart = true
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/idle = SubResource( 1 )
 
-[node name="Menus" type="Container" parent="."]
+[node name="Menus" type="Container" parent="." groups=["Cutout"]]
 margin_right = 40.0
 margin_bottom = 40.0
 rect_min_size = Vector2( 64, 64 )
@@ -96,7 +96,7 @@ margin_right = 104.0
 margin_bottom = 40.0
 rect_min_size = Vector2( 300, 400 )
 
-[node name="Tabs" type="TabContainer" parent="Menus/Limits"]
+[node name="Tabs" type="TabContainer" parent="Menus/Limits" groups=["Cutout"]]
 margin_right = 300.0
 margin_bottom = 400.0
 rect_min_size = Vector2( 200, 0 )

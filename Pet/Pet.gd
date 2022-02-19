@@ -26,4 +26,4 @@ func choose_pos(force=false):
 func update_visible_area():
 	var r : Rect2= $Menus.get_rect()
 	r.position+=position
-	get_parent().update_pet_area(r, scale)
+	get_parent().update_pet_area()

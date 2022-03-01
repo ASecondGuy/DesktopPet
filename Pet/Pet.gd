@@ -3,7 +3,7 @@ extends Node2D
 
 var goal_position : Vector2
 
-onready var visual := $Pet
+onready var visual := $PetVisuals
 onready var buttons := $Buttons
 
 
@@ -25,8 +25,7 @@ func _process(_delta):
 	
 
 
-func choose_pos(force=false):
-	if buttons.is_open() and !force: return
+func choose_pos():
 	var r = buttons.get_rect()
 	goal_position = Vector2(rand_range(0, OS.window_size.x-r.size.x), rand_range(0, OS.window_size.y-r.size.y))
 

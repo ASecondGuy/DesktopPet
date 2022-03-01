@@ -3,7 +3,7 @@ extends VBoxContainer
 onready var conf_btn := $Configs
 onready var add_btn := $Configs/add
 onready var rem_btn := $Configs/remove
-
+onready var _list := $Scroll/list
 
 
 const SHORTCUT_SAVE_PATH := "user://shortcuts.json"
@@ -22,15 +22,14 @@ func _ready():
 	
 
 func refresh_list():
-	var children = get_children()
-	children.remove(children.find(conf_btn))
-	for c in children:
+	for c in _list.get_children():
 		c.queue_free()
 	
 	for path in shortcut_paths:
 		var btn := Button.new()
+		btn.clip_text = true
 		btn.text = path.get_file()
-		add_child(btn)
+		_list.add_child(btn)
 # warning-ignore:return_value_discarded
 		btn.connect("pressed", self, "pressed", [path])
 	

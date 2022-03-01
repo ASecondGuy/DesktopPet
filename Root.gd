@@ -93,7 +93,7 @@ func update_pet_area():
 	line.clear_points()
 	for p in points:
 		line.add_point(p)
-#	OS.set_window_mouse_passthrough(PoolVector2Array(points))
+	OS.set_window_mouse_passthrough(PoolVector2Array(points))
 	
 
 func _polygons_intesect(p1, p2)->bool:

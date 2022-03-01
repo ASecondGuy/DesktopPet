@@ -1,6 +1,6 @@
 extends VBoxContainer
 
-onready var main := $"../main"
+
 onready var ignore_mouse := $ignore_mouse_timer
 var mouse_inside := false
 
@@ -22,16 +22,11 @@ func _ready():
 			b.connect("mouse_entered", self, "set", ["mouse_inside", true])
 #			b.connect("mouse_exited", self, "set", ["mouse_inside", false])
 
-func is_open()->bool:
-	return main.visible
 
 
-func _on_OpenBtn_pressed():
-	main.visible = !main.visible
-#	get_node("/root/Root").update_pet_area()
 
 
-func _on_follow_toggled(button_pressed):
+func _on_follow_toggled(_button_pressed):
 	pass # Replace with function body.
 
 func _can_use_btns()->bool:

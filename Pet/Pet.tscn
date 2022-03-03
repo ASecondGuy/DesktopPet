@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Pet/Pet.gd" type="Script" id=1]
 [ext_resource path="res://Portray/Rectangle.tscn" type="PackedScene" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://Pet/popupOpener/popupOpener.tscn" type="PackedScene" id=7]
 [ext_resource path="res://Pet/Calculator.gd" type="Script" id=8]
 [ext_resource path="res://Pet/windows.gd" type="Script" id=9]
+[ext_resource path="res://Pet/minigames/balloonPop/balloonPop.tscn" type="PackedScene" id=10]
 
 [sub_resource type="GDScript" id=1]
 script/source = "extends Button
@@ -334,11 +335,36 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "="
 
+[node name="MinigameList" type="WindowDialog" parent="windows" groups=["Cutout"]]
+margin_left = 359.0
+margin_top = 118.0
+margin_right = 493.0
+margin_bottom = 158.0
+window_title = "MinigameList"
+resizable = true
+
+[node name="List" type="VBoxContainer" parent="windows/MinigameList"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+
+[node name="BalloonPop" parent="windows/MinigameList/List" instance=ExtResource( 7 )]
+margin_left = 23.0
+margin_right = 110.0
+text = "BalloonPOP"
+hide_again = false
+popup_path = NodePath("../../../BalloonGame")
+
+[node name="BalloonGame" type="WindowDialog" parent="windows" groups=["Cutout"]]
+margin_right = 438.0
+margin_bottom = 400.0
+window_title = "BalloonPOP"
+
+[node name="balloonPop" parent="windows/BalloonGame" instance=ExtResource( 10 )]
+
 [node name="Buttons" type="VBoxContainer" parent="." groups=["Cutout"]]
-margin_left = 12.0
-margin_top = 13.0
-margin_right = 116.0
-margin_bottom = 113.0
+margin_right = 128.0
+margin_bottom = 128.0
 rect_min_size = Vector2( 64, 64 )
 mouse_filter = 0
 size_flags_horizontal = 0
@@ -347,31 +373,31 @@ alignment = 1
 script = ExtResource( 3 )
 
 [node name="Notesbtn" parent="Buttons" instance=ExtResource( 7 )]
-margin_left = 27.0
-margin_right = 77.0
+margin_left = 39.0
+margin_right = 89.0
 text = "Notes"
 popup_path = NodePath("../../windows/Notes")
 
 [node name="shortcutbtn" parent="Buttons" instance=ExtResource( 7 )]
-margin_left = 16.0
+margin_left = 28.0
 margin_top = 24.0
-margin_right = 88.0
+margin_right = 100.0
 margin_bottom = 44.0
 text = "Shortcuts"
 popup_path = NodePath("../../windows/Shortcuts")
 
 [node name="calculatorbtn" parent="Buttons" instance=ExtResource( 7 )]
-margin_left = 14.0
+margin_left = 26.0
 margin_top = 48.0
-margin_right = 89.0
+margin_right = 101.0
 margin_bottom = 68.0
 text = "Calculator"
 popup_path = NodePath("../../windows/Calculator")
 
 [node name="goAway" type="Button" parent="Buttons"]
-margin_left = 18.0
+margin_left = 30.0
 margin_top = 72.0
-margin_right = 85.0
+margin_right = 97.0
 margin_bottom = 92.0
 size_flags_horizontal = 4
 text = "Go Away"
@@ -386,11 +412,19 @@ size_flags_horizontal = 4
 toggle_mode = true
 text = "Follow Me"
 
-[node name="nextScreenbtn" type="Button" parent="Buttons"]
-margin_left = 7.0
+[node name="minigame" parent="Buttons" instance=ExtResource( 7 )]
+margin_left = 23.0
 margin_top = 96.0
-margin_right = 96.0
+margin_right = 105.0
 margin_bottom = 116.0
+text = "Minigames"
+popup_path = NodePath("../../windows/MinigameList")
+
+[node name="nextScreenbtn" type="Button" parent="Buttons"]
+margin_left = 19.0
+margin_top = 120.0
+margin_right = 108.0
+margin_bottom = 140.0
 size_flags_horizontal = 4
 text = "Next Screen"
 script = SubResource( 1 )
@@ -408,6 +442,8 @@ one_shot = true
 [connection signal="pressed" from="windows/Calculator/Margin/Box/Grid/backbtn" to="windows/Calculator/Margin/Box" method="_on_backbtn_pressed"]
 [connection signal="pressed" from="windows/Calculator/Margin/Box/Grid/clearbtn" to="windows/Calculator/Margin/Box" method="_on_clearbtn_pressed"]
 [connection signal="pressed" from="windows/Calculator/Margin/Box/Grid/Equals" to="windows/Calculator/Margin/Box" method="_on_Equals_pressed"]
+[connection signal="about_to_show" from="windows/BalloonGame" to="windows/BalloonGame/balloonPop" method="start"]
+[connection signal="popup_hide" from="windows/BalloonGame" to="windows/BalloonGame/balloonPop" method="_delete_all"]
 [connection signal="mouse_entered" from="Buttons" to="Buttons" method="set" binds= [ "mouse_inside", true ]]
 [connection signal="mouse_exited" from="Buttons" to="Buttons" method="_on_Buttons_mouse_exited"]
 [connection signal="pressed" from="Buttons/goAway" to="Buttons" method="_on_goAway_pressed"]

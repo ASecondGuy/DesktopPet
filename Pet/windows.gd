@@ -11,5 +11,6 @@ func _ready():
 
 
 func _on_input(event:InputEvent, window:WindowDialog):
-	move_child(window, get_child_count()-1)
+	if event is InputEventMouseButton:
+		move_child(window, get_child_count()-1)
 

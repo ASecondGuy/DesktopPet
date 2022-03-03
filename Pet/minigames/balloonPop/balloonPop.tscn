@@ -1,0 +1,56 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Pet/minigames/balloonPop/balloonPop.gd" type="Script" id=1]
+
+[sub_resource type="Curve" id=1]
+_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 0.151961, 1 ), 0.0, 0.0, 0, 0, Vector2( 0.857843, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="Curve" id=2]
+_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0.238636 ), -2.04976, 0.0, 0, 0 ]
+
+[node name="balloonPop" type="MarginContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+
+[node name="Timer" type="Timer" parent="."]
+autostart = true
+
+[node name="respawnTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 1019.0
+margin_bottom = 595.0
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+margin_right = 1014.0
+margin_bottom = 14.0
+
+[node name="balloonArea" type="Control" parent="VBoxContainer"]
+margin_top = 18.0
+margin_right = 1014.0
+margin_bottom = 590.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="VBoxContainer"]
+emitting = false
+amount = 80
+lifetime = 3.0
+one_shot = true
+explosiveness = 0.64
+emission_shape = 1
+emission_sphere_radius = 20.97
+spread = 180.0
+initial_velocity = 100.0
+scale_amount = 4.0
+scale_amount_random = 0.2
+scale_amount_curve = SubResource( 1 )
+hue_variation = 1.0
+hue_variation_random = 1.0
+anim_speed_curve = SubResource( 2 )
+
+[connection signal="timeout" from="respawnTimer" to="." method="_on_respawnTimer_timeout"]

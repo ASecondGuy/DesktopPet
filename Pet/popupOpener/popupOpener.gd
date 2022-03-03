@@ -21,6 +21,7 @@ func _on_popupOpener_pressed():
 	if !popup.visible:
 		
 		popup.popup()
+# warning-ignore:return_value_discarded
 		popup.connect("popup_hide", popup, "show")
 		return
 	

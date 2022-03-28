@@ -5,3 +5,11 @@
 [node name="poligons" type="Node2D" parent="."]
 
 [node name="Polygon2D" type="Polygon2D" parent="poligons"]
+
+[node name="Label" type="Label" parent="."]
+margin_left = 12.0
+margin_top = 16.0
+margin_right = 455.0
+margin_bottom = 47.0
+text = "You found some unused content that might never see the light of day
+have fun with my horrible cat drawing if you have Krita installed"

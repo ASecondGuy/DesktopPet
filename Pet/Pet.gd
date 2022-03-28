@@ -1,5 +1,9 @@
 extends Node2D
-
+# This is the pet itself
+# You can make as many as you'd like in theory and this can be anything you like.
+# As long as everything you want on screen is in the Cutout group and overwrites
+# get_cutout_polygon() or is a Control, Path2D or Sprite. Those 3 have automatic
+# polygons assinged if they don't overwrite get_cutout_polygon()
 
 var goal_position : Vector2
 

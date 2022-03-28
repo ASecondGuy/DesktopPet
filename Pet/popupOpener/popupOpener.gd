@@ -1,4 +1,5 @@
 extends Button
+# This is far from perfect. I need to find a better solution.
 
 enum OPENMODE {
 	

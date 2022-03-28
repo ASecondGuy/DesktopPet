@@ -1,4 +1,6 @@
 extends VBoxContainer
+# Mouse position is being weird with passthrough.
+# I'm not sure what would be the best way to solve it.
 
 
 onready var ignore_mouse := $ignore_mouse_timer

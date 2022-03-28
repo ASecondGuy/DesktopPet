@@ -1,4 +1,7 @@
 extends Sprite
+# This is a way to do it.
+# Continue or don't. I don't care.
+
 
 onready var anim : AnimationPlayer = $AnimationPlayer
 var idle_variations := 1

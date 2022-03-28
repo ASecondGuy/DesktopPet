@@ -1,5 +1,5 @@
 extends Node
-
+## This script does the basic functions of a desctop pet.
 
 var window_rect := Rect2() 
 var full_screen_detection := false
@@ -11,6 +11,10 @@ func _ready():
 	Engine.target_fps = 30
 	OS.window_position = Vector2()
 	OS.window_size = OS.get_screen_size()-Vector2(0, 1)
+	
+	# doesn't always work in the Editor. Some inconsistent wierdness of 3.4.4
+	# should work on export.
+	OS.set_window_always_on_top(true)
 	window_rect = Rect2(OS.window_position, OS.window_size)
 	get_viewport().transparent_bg = true
 	update_pet_area()
@@ -18,6 +22,8 @@ func _ready():
 func _process(_delta):
 	update_pet_area()
 
+## This manages the passthrough
+## Currently called every frame. I'm working on a more performant solution.
 func update_pet_area():
 	if full_screen_detection:
 		OS.set_window_mouse_passthrough([])
@@ -27,6 +33,7 @@ func update_pet_area():
 	for node in get_tree().get_nodes_in_group("Cutout"):
 		if node.has_method("get_cutout_polygon"):
 			polygons.push_back(node.get_cutout_polygon())
+			continue
 		
 		if Array(ClassDB.get_inheriters_from_class("Control")).has(node.get_class()):
 			if !node.is_visible_in_tree(): continue
@@ -49,9 +56,9 @@ func update_pet_area():
 			pol.push_back(r.position+r.size)
 			pol.push_back(Vector2(r.position.x, r.position.y+r.size.y))
 			polygons.push_back(pol)
-		if node.get_class() == "Path2D":
+		elif node.get_class() == "Path2D":
 			polygons.push_back(node.curve.get_baked_points())
-		if node.get_class() == "Sprite":
+		elif node.get_class() == "Sprite":
 			var pol := []
 			var r : Rect2 = node.get_rect()
 			r.position = node.global_position
@@ -65,7 +72,7 @@ func update_pet_area():
 	var points := []
 	
 	
-	
+	# It works. better don't touch it.
 	points.clear()
 	while _polygons_overlap(polygons):
 		for i in range(polygons.size()):
@@ -88,7 +95,7 @@ func update_pet_area():
 		points.push_back(poly[0])
 		points.push_back(Vector2())
 	
-	########
+	# Manage debug draw
 	line.clear_points()
 	for p in points:
 		line.add_point(p)

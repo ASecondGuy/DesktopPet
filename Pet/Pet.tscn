@@ -369,6 +369,7 @@ rect_min_size = Vector2( 64, 64 )
 mouse_filter = 0
 size_flags_horizontal = 0
 size_flags_vertical = 0
+theme = ExtResource( 6 )
 alignment = 1
 script = ExtResource( 3 )
 
@@ -404,10 +405,10 @@ text = "Go Away"
 
 [node name="follow" type="Button" parent="Buttons"]
 visible = false
-margin_left = 19.0
-margin_top = 48.0
-margin_right = 96.0
-margin_bottom = 68.0
+margin_left = 25.0
+margin_top = 96.0
+margin_right = 102.0
+margin_bottom = 116.0
 size_flags_horizontal = 4
 toggle_mode = true
 text = "Follow Me"

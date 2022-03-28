@@ -10,7 +10,6 @@ onready var line := $"debugdraw/Line2D"
 func _ready():
 	Engine.target_fps = 30
 	OS.window_position = Vector2()
-	OS.current_screen = 1
 	OS.window_size = OS.get_screen_size()-Vector2(0, 1)
 	window_rect = Rect2(OS.window_position, OS.window_size)
 	get_viewport().transparent_bg = true

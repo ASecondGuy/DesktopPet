@@ -4,6 +4,9 @@ extends VBoxContainer
 onready var ignore_mouse := $ignore_mouse_timer
 var mouse_inside := false
 
+var following := false
+
+
 func _process(delta):
 	_test_mouse_pos()
 	var change : float = [-delta, delta][int(mouse_inside)]*5
@@ -26,8 +29,8 @@ func _ready():
 
 
 
-func _on_follow_toggled(_button_pressed):
-	pass # Replace with function body.
+func _on_follow_toggled(button_pressed):
+	following = button_pressed
 
 func _can_use_btns()->bool:
 	if ignore_mouse.time_left > 0: return false
